@@ -1,79 +1,653 @@
-{% extends "galeria/base.html" %}  
-{% load static %}  
+{% extends "galeria/base.html" %}
+{% load static %}
 {% block content %}
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Embutido */
 
-    <div class="pagina-inicial">
-        <header class="cabecalho">
-            <img src="{% static '/assets/logo/p.png' %}" alt="Logo da Planet" />
-            <div class="cabecalho__busca">
-                <div class="busca__fundo">
-                    <form action="{% url 'buscar' %}">
-                        <input class="busca__input" type="text" name="buscar" placeholder="O que você procura?">
-                        <button type="submit">
-                            <img class="busca__icone" src="{% static '/assets/ícones/1x/search.png'%}" alt="ícone de search">
-                        </button>                      
-                    </form>                   
-                </div>
+        :root {
+            /* Cores Modernas e Elegantes */
+            --primary-color: #6C63FF; /* Um tom de roxo/azul mais suave e moderno */
+            --secondary-color: #00C853; /* Verde vibrante */
+            --accent-color: #FFC107; /* Amarelo dourado */
+            --text-color: #333333; /* Texto principal mais escuro */
+            --light-text-color: #757575; /* Texto secundário */
+            --background-color: #F0F2F5; /* Fundo cinza claro, para um visual clean */
+            --card-background: #FFFFFF; /* Fundo do card branco puro */
+            --border-color: #E0E0E0; /* Borda suave */
+            --hover-shadow: rgba(0, 0, 0, 0.15); /* Sombra mais intensa no hover */
+        }
+
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%; /* Ocupa 100% da largura */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center; /* Centraliza o conteúdo principal horizontalmente */
+            min-height: 100vh;
+            padding: 0; /* Remove padding do body para usar 100% width */
+        }
+
+        /* Container principal - agora ocupa a largura total mas com padding interno */
+        .pagina-inicial {
+            width: 100%; /* Ocupa 100% da largura */
+            max-width: 100%; /* Remove a largura máxima fixa */
+            background-color: var(--card-background);
+            border-radius: 0; /* Remove borda arredondada externa */
+            box-shadow: none; /* Remove sombra externa */
+            padding: 40px 5%; /* Padding lateral em porcentagem para site full-width */
+            display: flex;
+            flex-direction: column;
+            gap: 40px; /* Aumenta o espaçamento entre as seções */
+            flex-grow: 1;
+        }
+
+        /* --- Header (cabecalho) --- */
+        .cabecalho {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px; /* Aumenta o espaçamento */
+            position: relative;
+            padding-top: 25px; /* Mais espaço para o menu no canto superior */
+        }
+
+        .cabecalho img { /* Seu logo (ia.png) */
+            max-width: 220px; /* Logo maior */
+            height: auto;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1)); /* Sombra suave para o logo */
+        }
+
+        /* Se usar um logo de texto estilizado */
+        .logo-texto {
+            font-size: 4.5em; /* Logo de texto ainda maior */
+            font-weight: 700; /* Mais negrito */
+            color: var(--text-color);
+            letter-spacing: -2px; /* Ajusta espaçamento */
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para o texto */
+        }
+
+        .logo-texto strong {
+            color: var(--primary-color);
+            font-weight: 900; /* Mais impacto na parte destacada */
+        }
+        
+        .slogan {
+            font-size: 1.2em; /* Slogan um pouco maior */
+            color: var(--light-text-color);
+            margin-top: -10px; /* Ajusta a proximidade com o logo */
+        }
+
+        /* --- Menu de Navegação Superior (Minimalista) --- */
+        .menu-minimalista-superior {
+            position: absolute;
+            top: 25px;
+            right: 5%; /* Ajusta a margem para 5% da largura */
+            display: flex;
+            gap: 20px; /* Aumenta espaçamento entre os links */
+        }
+
+        .menu-minimalista-superior a {
+            color: var(--light-text-color);
+            text-decoration: none;
+            font-size: 1em; /* Fonte um pouco maior */
+            font-weight: 500; /* Um pouco mais de peso */
+            transition: color 0.3s ease, transform 0.2s ease;
+            white-space: nowrap;
+            padding: 5px 0; /* Mais espaço de clique, mas sem borda */
+        }
+
+        .menu-minimalista-superior a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px); /* Pequeno efeito de elevação */
+        }
+
+        .menu-minimalista-superior a.active {
+            color: var(--primary-color);
+            font-weight: 700; /* Mais negrito para o ativo */
+            border-bottom: 2px solid var(--primary-color); /* Linha abaixo para o ativo */
+        }
+
+        /* --- Search Section --- */
+        .cabecalho__busca {
+            width: 100%;
+            max-width: 700px; /* Aumenta a largura da barra de busca */
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px; /* Mais espaço após a busca */
+        }
+
+        .busca__fundo {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 30px; /* Mais arredondado */
+            padding: 8px; /* Padding interno maior */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+            transition: all 0.3s ease;
+            background-color: var(--card-background); /* Fundo branco */
+        }
+
+        .busca__fundo:focus-within {
+            border-color: var(--primary-color); /* Borda da cor primária */
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); /* Sombra mais intensa */
+        }
+
+        .busca__fundo form {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+
+        .busca__input {
+            flex-grow: 1;
+            padding: 12px 20px; /* Padding maior no input */
+            border: none;
+            border-radius: 25px; /* Ajusta o arredondamento interno */
+            font-size: 1.15em; /* Fonte um pouco maior */
+            outline: none;
+            background: transparent;
+        }
+
+        .busca__fundo button {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 12px 25px; /* Padding do botão maior */
+            border-radius: 25px; /* Mais arredondado */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px; /* Espaço maior */
+        }
+
+        .busca__fundo button:hover {
+            background-color: #5A54D6; /* Tom mais escuro do roxo/azul */
+            transform: translateY(-1px);
+        }
+
+        .busca__icone {
+            width: 26px; /* Ícone um pouco maior */
+            height: 26px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* --- Main Content --- */
+        .principal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 40px; /* Espaçamento entre as seções principais */
+        }
+
+        /* --- Tags --- */
+        .tags {
+            text-align: center;
+            margin-bottom: 30px; /* Aumenta o espaço */
+        }
+
+        .tags__titulo {
+            font-size: 1.3em; /* Título das tags maior */
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .tags__lista {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px; /* Espaçamento entre as tags */
+        }
+
+        .tags__tag {
+            background-color: var(--background-color); /* Fundo da tag mais claro */
+            color: var(--light-text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 22px; /* Padding maior */
+            border-radius: 25px; /* Mais arredondado */
+            cursor: pointer;
+            font-size: 0.95em; /* Fonte ligeiramente maior */
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tags__tag:hover {
+            background-color: var(--primary-color);
+            color: var(--card-background);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
+        }
+
+        /* --- Galeria --- */
+        .galeria {
+            width: 100%;
+        }
+
+        .cards__titulo {
+            text-align: center;
+            margin-bottom: 30px; /* Mais espaço */
+            font-size: 2em; /* Título da galeria maior */
+            color: var(--text-color);
+            font-weight: 700;
+        }
+
+        .cards__lista {
+            list-style: none;
+            display: grid;
+            /* Seis cards por fileira */
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Min-width menor para caber 6 */
+            gap: 20px; /* Espaçamento entre os cards */
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 10px; /* Mais arredondado */
+            padding: 15px; /* Padding menor para cards menores */
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Sombra suave e elegante */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden; /* Garante que nada "vaze" */
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--hover-shadow); /* Sombra no hover */
+        }
+
+        .card__imagem {
+            width: 100%; /* Ocupa 100% da largura do card */
+            height: 120px; /* Altura fixa para imagem de card pequeno */
+            object-fit: cover;
+            border-radius: 8px; /* Mais arredondado */
+            margin-bottom: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card__imagem {
+            transform: scale(1.05); /* Zoom suave na imagem ao passar o mouse */
+        }
+
+        .card__tag {
+            background-color: var(--primary-color); /* Cor da tag principal */
+            color: white;
+            padding: 4px 8px; /* Padding menor */
+            border-radius: 3px;
+            font-size: 0.75em; /* Fonte bem pequena para a tag */
+            font-weight: 600;
+            position: absolute; /* Posiciona no canto da imagem */
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card__info {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1; /* Permite que o info ocupe espaço */
+            justify-content: space-between; /* Espaçamento entre titulo/descricao e icones */
+        }
+
+        .card__titulo {
+            font-size: 1.1em; /* Título do card menor */
+            color: var(--text-color); /* Cor do texto principal */
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .card__texto {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end; /* Alinha o ícone e a descrição na parte inferior */
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .card__descricao {
+            flex-grow: 1;
+            font-size: 0.85em; /* Descrição menor */
+            color: var(--light-text-color);
+            text-align: left;
+            margin-right: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limita a 2 linhas */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4; /* Espaçamento de linha */
+        }
+
+        .card__texto span img {
+            width: 20px; /* Ícone de favorito menor */
+            height: 20px;
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+            filter: grayscale(100%); /* Ícone de coração cinza */
+        }
+
+        .card__texto span img:hover {
+            transform: scale(1.1);
+            filter: grayscale(0%) hue-rotate(330deg); /* Colorido ao passar o mouse */
+        }
+
+
+        /* --- Footer (Rodapé) --- */
+        .rodape {
+            width: 100%;
+            max-width: 100%; /* Ocupa a largura total da página */
+            text-align: center;
+            margin-top: auto;
+            padding: 25px 5%; /* Padding lateral em porcentagem */
+            border-top: 1px solid var(--border-color);
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            background-color: var(--card-background);
+            border-radius: 0;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05); /* Sombra mais suave */
+        }
+
+        /* --- Responsividade --- */
+        @media (max-width: 1200px) { /* Para telas um pouco menores que o desktop */
+            .cards__lista {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Talvez 5 ou 4 cards */
+            }
+        }
+        @media (max-width: 992px) {
+            .pagina-inicial {
+                padding: 30px 4%;
+                gap: 30px;
+            }
+            .cabecalho img {
+                max-width: 180px;
+            }
+            .logo-texto {
+                font-size: 3.5em;
+            }
+            .slogan {
+                font-size: 1.1em;
+            }
+            .menu-minimalista-superior {
+                top: 20px;
+                right: 4%;
+                gap: 15px;
+            }
+            .menu-minimalista-superior a {
+                font-size: 0.95em;
+            }
+            .cabecalho__busca {
+                max-width: 600px;
+                margin-bottom: 30px;
+            }
+            .busca__input {
+                font-size: 1.05em;
+            }
+            .cards__lista {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 3 ou 4 cards */
+            }
+            .card__imagem {
+                height: 100px;
+            }
+            .rodape {
+                 padding: 20px 4%;
+            }
+        }
+        @media (max-width: 768px) {
+            .pagina-inicial {
+                padding: 25px 3%;
+                gap: 25px;
+            }
+            .cabecalho {
+                padding-top: 20px;
+            }
+            .cabecalho img {
+                max-width: 150px;
+            }
+            .logo-texto {
+                font-size: 2.8em;
+            }
+            .slogan {
+                font-size: 1em;
+            }
+            .menu-minimalista-superior {
+                position: static;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                margin-bottom: 25px;
+                gap: 10px;
+                padding: 0;
+            }
+            .menu-minimalista-superior a {
+                font-size: 0.85em;
+                padding: 5px 10px;
+                border: 1px solid var(--border-color);
+                border-radius: 15px;
+            }
+            .busca__fundo {
+                flex-direction: column;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+            .busca__fundo form {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .busca__input {
+                width: 100%;
+                border: 1px solid var(--border-color);
+                border-radius: 25px;
+                padding: 12px 18px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+                margin-bottom: 0;
+            }
+            .busca__input:focus {
+                border-color: var(--search-border-focus);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            }
+            .busca__fundo button {
+                width: 80%;
+                max-width: 200px;
+                margin-right: 0;
+            }
+            .tags__titulo {
+                font-size: 1.1em;
+            }
+            .tags__tag {
+                font-size: 0.85em;
+                padding: 8px 15px;
+            }
+            .cards__titulo {
+                font-size: 1.8em;
+            }
+            .cards__lista {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* 2 ou 3 cards */
+            }
+            .card {
+                padding: 12px;
+            }
+            .card__imagem {
+                height: 90px;
+            }
+            .card__titulo {
+                font-size: 1em;
+            }
+            .card__descricao {
+                font-size: 0.8em;
+            }
+            .rodape {
+                 padding: 15px 3%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pagina-inicial {
+                padding: 20px 2%;
+                gap: 20px;
+            }
+            .cabecalho img {
+                max-width: 120px;
+            }
+            .logo-texto {
+                font-size: 2.5em;
+            }
+            .slogan {
+                font-size: 0.9em;
+            }
+            .menu-minimalista-superior a {
+                font-size: 0.8em;
+                padding: 4px 8px;
+            }
+            .busca__input {
+                font-size: 0.95em;
+                padding: 10px 15px;
+            }
+            .busca__fundo button {
+                padding: 10px 15px;
+                width: 90%;
+            }
+            .tags__titulo {
+                font-size: 1em;
+            }
+            .tags__tag {
+                font-size: 0.8em;
+                padding: 7px 12px;
+            }
+            .cards__titulo {
+                font-size: 1.5em;
+            }
+            .cards__lista {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Apenas 2 cards */
+            }
+            .card {
+                padding: 10px;
+            }
+            .card__imagem {
+                height: 80px;
+            }
+            .card__titulo {
+                font-size: 0.9em;
+            }
+            .card__descricao {
+                font-size: 0.75em;
+                -webkit-line-clamp: 1; /* Limita a 1 linha em telas muito pequenas */
+            }
+            .card__texto span img {
+                width: 18px;
+                height: 18px;
+            }
+            .rodape {
+                 padding: 12px 2%;
+            }
+        }
+    </style>
+</head>
+
+<div class="pagina-inicial">
+    <header class="cabecalho">
+        <nav class="menu-minimalista-superior">
+            <a href="{% url 'index' %}" class="{% if 'index' in request.resolver_match.view_name %}active{% endif %}">Home</a>
+            <a href="{% url 'login' %}" class="{% if 'login' in request.resolver_match.view_name %}active{% endif %}">Login</a>
+            <a href="{% url 'cadastro' %}" class="{% if 'cadastro' in request.resolver_match.view_name %}active{% endif %}">Cadastro</a>
+            <a href="#" class="{% if 'surpreenda' in request.resolver_match.view_name %}active{% endif %}">Surpreenda-me</a>
+        </nav>
+
+        <img src="{% static '/assets/logo/ia.png' %}" alt="Logo da Planet" />
+        <div class="cabecalho__busca">
+            <div class="busca__fundo"> {# Container da caixa de pesquisa e botão #}
+                <form action="{% url 'buscar' %}" method="get"> {# Certifique-se de que o método é GET para buscas #}
+                    <input class="busca__input" type="text" name="buscar" placeholder="Pesquise por ferramentas de IA...">
+                    <button type="submit">
+                        <img class="busca__icone" src="{% static '/assets/ícones/1x/search.png'%}" alt="ícone de search">
+                    </button>
+                </form>
             </div>
-        </header>
-        <main class="principal">
-            <section class="menu-lateral">
-                <nav class="menu-lateral__navegacao">
-                    <a href="#"><img src="{% static '/assets/ícones/1x/Home - ativo.png'%}"> Home</a>
-                    <a href="{% url 'login' %}"><img src="{% static '/assets/ícones/1x/Mais vistas - inativo.png' %}"> Login</a>
-                    <a href="{% url 'cadastro' %}"><img src="{% static '/assets/ícones/1x/Novas - inativo.png' %}"> Cadastro</a>
-                    <a href="#"><img src="{% static '/assets/ícones/1x/Surpreenda-me - inativo.png'%}"> Surpreenda-me</a>
-                </nav>
-            </section>
-            <section class="conteudo">
-                <section class="banner">
-                    <img class="banner__imagem" src="{% static '/assets/imagens/Banner(2).png'%}" alt="banner da planet">
-                    <h1 class="banner__titulo"> A galeria mais completa de fotos do espaço!</h1>
-                </section>
-                <section class="tags">
-                    <p class="tags__titulo">Busque por tags:</p>
-                    <ul class="tags__lista">
-                        <li class="tags__tag">Nebulosa</li>
-                        <li class="tags__tag">Estrela</li>
-                        <li class="tags__tag">Galáxia</li>
-                        <li class="tags__tag">Planeta</li>
-                    </ul>
-                </section>
-                <section class="galeria">
-                    <div class="cards">
-                        <h2 class="cards__titulo">Navegue pela galeria</h2>
-                        <ul class="cards__lista">
+        </div>
+    </header>
+    
+    <main class="principal">
+        <section class="tags">
+            <p class="tags__titulo">Busque por tags:</p>
+            <ul class="tags__lista">
+                <li class="tags__tag">Estúdio</li>
+                <li class="tags__tag">Automação</li>
+                <li class="tags__tag">Código</li>
+                <li class="tags__tag">Storytelling</li>
+            </ul>
+        </section>
+        
+        <section class="galeria">
+            <div class="cards">
+                <h2 class="cards__titulo">Escolha sua IA</h2>
+                <ul class="cards__lista">
+                    {% for fotografia in cards %}
+                    <li class="card">
+                        <a href="{% url 'imagem' fotografia.id %}">
+                            {% if fotografia.foto == "" or fotografia.foto == null %}
+                            <img class="card__imagem" src="{% static '/assets/imagens/galeria/notfound.jpg' %}" alt="foto">
+                            {% else %}
+                            <img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto">
+                            {% endif %}
+                        </a>
+                        <span class="card__tag">{{ fotografia.categoria }}</span>
+                        <div class="card__info">
+                            <p class="card__titulo">{{fotografia.nome}}</p>
+                            <div class="card__texto">
+                                <p class="card__descricao">{{fotografia.legenda}}</p>
+                                <span>
+                                    <img src="{% static '/assets/ícones/1x/favorite_outline.png'%}" alt="ícone de coração">
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </main>
+</div>
 
-                            
-                           
-                            <!-- Comentario HTML-->
-                            {% for fotografia in cards %}
-                            <li class="card">
-                                <a href="{% url 'imagem' fotografia.id %}">
-                                    <!--<img class="card__imagem" src="{% static '/assets/imagens/galeria/'%}{{fotografia.foto}}" alt="foto">-->
-                                    {% if fotografia.foto == "" or fotografia.foto == null %}
-                                    <img class="card__imagem" src="{% static '/assets/imagens/galeria/notfound.jpg' %}" alt="foto">
-                                    {% else %}
-                                    <img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto">
-                                    {% endif %}
-                                </a>
-                                <span class="card__tag">Estrelas</span>
-                                <div class="card__info">
-                                    <p class="card__titulo">{{fotografia.nome}}</p>
-                                    <div class="card__texto">
-                                        <p class="card__descricao">{{fotografia.legenda}}</p>
-                                        <span>
-                                            <img src="{% static '/assets/ícones/1x/favorite_outline.png'%}" alt="ícone de coração">
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </section>
-            </section>
-        </main>
-    </div>
+<footer class="rodape">
+    <p>&copy; 2025 IA Tools. Todos os direitos reservados.</p>
+</footer>
 
 {% endblock %}

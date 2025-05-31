@@ -1,384 +1,470 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
+/* static/css/style.css */
 
+/* Importação da fonte Roboto do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+:root {
+    /* Cores */
+    --primary-color: #4285F4; /* Azul Google */
+    --secondary-color: #34A853; /* Verde Google */
+    --accent-color: #FBBC05; /* Amarelo Google */
+    --text-color: #202124; /* Cor de texto principal */
+    --light-text-color: #5F6368; /* Cor de texto secundária */
+    --background-color: #F8F9FA; /* Fundo claro */
+    --card-background: #FFFFFF; /* Fundo de card */
+    --border-color: #DADCE0; /* Cor da borda */
+    --search-border-focus: #8ab4f8; /* Borda da pesquisa ao focar */
+}
+
+/* Reset básico */
+* {
     margin: 0;
     padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
+    box-sizing: border-box;
 }
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-    display: block;
-}
+
 body {
-    line-height: 1;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex; /* Para centralizar o conteúdo principal se desejar */
+    justify-content: center;
+    align-items: flex-start; /* Alinha no topo */
     min-height: 100vh;
-    background: linear-gradient(#041833,#04244F,#154580);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-}
-ol, ul {
-    list-style: none;
-}
-blockquote, q {
-    quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content: '';
-    content: none;
-}
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
+    padding: 20px; /* Espaçamento geral */
 }
 
-.banner {
-    width: auto;
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.banner__imagem {
+/* Container principal, assumindo que `pagina-inicial` é o wrapper */
+.pagina-inicial {
     width: 100%;
-}
-
-.banner__titulo {
-    color: #FFFFFF;
-    font-size: 40px;
-    width: 350px;
-    line-height: 50px;
-    position: absolute;
-    top: 80px;
-    left: 80px;
-}
-
-.cabecalho {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    margin: 1.5rem 0 4rem 0;
-}
-
-.cabecalho__busca {
-    align-items: center;
-    border-radius: 10px;
-    background: linear-gradient(45deg, #C98CF1,#7B78E5);
-    display: flex;
-    height: auto;
-    justify-content: space-between;
-    padding: 2px;
-    width: auto; 
-}
-
-.busca__fundo {
-    align-items: center;
-    background-color: #041A37;
+    max-width: 1200px; /* Aumentado para acomodar o menu lateral */
+    background-color: var(--card-background);
     border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 40px 30px;
     display: flex;
-    margin: 0 auto;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* --- Header (cabecalho) --- */
+.cabecalho {
+    text-align: center;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Espaço entre logo e busca */
+}
+
+.cabecalho img { /* Estilo para o seu logo ia.png */
+    max-width: 150px; /* Ajuste o tamanho do seu logo */
+    height: auto;
+}
+
+/* Se você quiser um logo de texto estilizado como "IA Tools" */
+.logo-texto {
+    font-size: 3.5em;
+    font-weight: 500;
+    color: var(--text-color);
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+
+.logo-texto strong {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* --- Search Section (cabecalho__busca e busca__fundo) --- */
+.cabecalho__busca {
     width: 100%;
+    max-width: 600px;
+    display: flex; /* Para o form ficar alinhado */
+    justify-content: center;
+}
+
+.busca__fundo { /* Este é o container da caixa de pesquisa e botão */
+    width: 100%;
+    display: flex; /* Flexbox para alinhar input e botão */
+    align-items: center; /* Centraliza verticalmente */
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+
+.busca__fundo:focus-within {
+    border-color: var(--search-border-focus);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.busca__fundo form {
+    display: flex;
+    width: 100%;
+    align-items: center;
 }
 
 .busca__input {
-    align-items: center;
-    background-color: transparent;
+    flex-grow: 1; /* Ocupa o máximo de espaço possível */
+    padding: 10px 15px;
     border: none;
-    font-size: 1rem;
-    height: 24px;
-    padding: 10px;
-    width: 500px;
-}
-
-.busca__icone {
-    cursor: pointer;
-    width: 2rem;
-    height: 2rem;
-}
-
-.cards {
-    width: 100%;
-}
-
-.cards__titulo {
-    color: #7B78E5;
-    font-size: 2rem;
-    line-height: 3rem;
-    margin-bottom: 1.5rem;
-}
-
-.cards__lista{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: space-between;
-}
-
-.card {
-    border-radius: 10px;
-    box-shadow: 0px 10px 10px #00000050;
-    color: #FFFFFF;
-    margin-bottom: 1.5rem;
-    position: relative;
-    width: 450px;
-}
-
-.card__imagem {
-    width: 450px;
-    border-radius: 10px 10px 0 0;
-}
-
-.card__tag {
-    background-color: #D9D9D940;
-    border-radius: 8px;
-    border: 2px solid transparent;
-    font-size: 1.2rem;
-    left: 310px;
-    margin-right: 1.5rem;
-    padding: .5rem .5rem;
-    position: absolute;
-    text-align: center;
-    top: 20px;
-    width: 100px;
-}
-
-.card__info {
-    font-size: 1.2rem;
-    padding: 0 1.5rem 1rem 1.5rem;
-}
-
-.card__titulo {
-    font-weight: bold;
-    line-height: 1.2rem;
-    margin-top: 0.8em;
-}
-
-.card__texto {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.card__texto img {
-    cursor: pointer;
-}
-
-.card__descricao {
-    font-size: 0.6em;
-    margin-top: 0.8em;
-}
-
-.galeria {
-    display: flex;
-    width: 100%;
-}
-
-.imagem {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.imagem__conteudo {
-    background-color: transparent;
-    display: flex;
-    flex-direction: column;
-    border-radius: 20px 20px 0 0;
-    width: 950px;
-}
-
-.imagem__imagem {
-    width: 100%;
     border-radius: 20px;
+    font-size: 1.1em;
+    outline: none;
+    background: transparent;
 }
 
-.imagem__info {
-    font-size: 1.2rem;
+.busca__fundo button {
+    background-color: var(--primary-color); /* Fundo do botão */
+    border: none;
+    padding: 10px 15px; /* Ajustado para o ícone */
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
+    justify-content: center;
+    margin-right: 5px; /* Espaço entre o botão e a borda direita */
 }
 
-.imagem__texto {
+.busca__fundo button:hover {
+    background-color: #357ae8;
+}
+
+.busca__icone { /* Estilo para o ícone de search */
+    width: 24px; /* Tamanho do ícone */
+    height: 24px;
+    filter: brightness(0) invert(1); /* Deixa o ícone branco */
+}
+
+/* --- Main (principal) e Conteúdo Lateral --- */
+.principal {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: #FFFFFF;
-    margin-top: 0.5rem;
-}
-
-.imagem__titulo {
-    font-weight: bold;
-    line-height: 2rem;
-    color: #FFFFFF;
-}
-
-.imagem__texto {
-    font-size: 1rem;
-}
-
-.imagem__descricao {
-    font-size: 0.7rem;
+    gap: 30px; /* Espaçamento entre menu lateral e conteúdo */
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
 }
 
 .menu-lateral {
-    padding-right: 1.5rem;
-    box-sizing: border-box;
-    min-width: 270px;
+    flex: 0 0 200px; /* Largura fixa para o menu lateral */
+    padding: 20px 0;
+    border-right: 1px solid var(--border-color); /* Borda para separar */
 }
 
 .menu-lateral__navegacao {
     display: flex;
     flex-direction: column;
+    gap: 15px;
 }
 
 .menu-lateral__navegacao a {
-    font-family: 'Space Grotesk', sans-serif;
-    align-items: center;
-    display: flex;
-    margin-bottom: 1.5rem;
+    color: var(--light-text-color);
     text-decoration: none;
-    color: #D9D9D9;
-    font-size: 24px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.menu-lateral__navegacao a:first-child {
-    font-weight: bold;
-    color: #7B78E5;
+.menu-lateral__navegacao a img {
+    width: 24px;
+    height: 24px;
 }
 
-.menu-lateral__navegacao img {
-    margin-right: 1.5rem;
+.menu-lateral__navegacao a:hover {
+    background-color: var(--primary-color);
+    color: white;
 }
 
-.pagina-inicial {
-    max-width: 1440px;
-    padding: 1.5rem;
-    margin: 0 auto;
+/* Estilo para o item ativo (ex: Home) */
+.menu-lateral__navegacao a[href="#"]:first-child { /* Exemplo: o primeiro link como ativo */
+    background-color: var(--primary-color);
+    color: white;
 }
 
-.populares {
-    margin-left: 1.5rem;
+.menu-lateral__navegacao a[href="#"]:first-child img {
+    filter: brightness(0) invert(1); /* Ícone branco para ativo */
 }
 
-.populares__titulo {
-    font-size: 2rem;
-    color: #7B78E5;
-    line-height: 3rem;
-    margin-bottom: 1.5rem;
-}
 
-.populares__imagens {
+/* --- Conteúdo Principal (section conteudo) --- */
+.conteudo {
+    flex-grow: 1; /* Ocupa o restante do espaço */
     display: flex;
     flex-direction: column;
+    gap: 30px;
 }
 
-.populares__imagem {
-    margin-bottom: 1.5rem;
-}
-
-.populares__botao {
-    width: 100%;
-    height: 50px;
-    border-radius: 10px;
-    background: linear-gradient(45deg, #C98CF1,#7B78E5);
-    padding: 2px;
-    box-sizing: border-box;
-}
-
-.populares__link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    text-decoration: none;
-    color: #FFFFFF;
-    background-color: #082D5C;
-    width: 100%;
-    height: 100%;
-    border-radius: 8px;
-    transition: .5s;
-}
-
-.populares__link:hover {
-    background: transparent;
-}
-
-.principal {
-    display: flex;
-    justify-content: space-between;
-}
-
-.rodape {
-    background-color: #04244F;
-    width: 100%;
-    padding: 1.5rem 3rem;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    color: #FFFFFF;
-}
-
-.rodape__icones {
-    width: 80px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.rodape__texto {
-    font-size: 1.1rem;
-}
-
+/* --- Tags (tags) --- */
 .tags {
-    padding: 1.5rem 0;
-    display: flex;
-    align-items: center;
-    color: #D9D9D9;
-    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .tags__titulo {
-    margin-right: 4rem;
+    font-size: 1.2em;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-weight: 500;
 }
 
 .tags__lista {
+    list-style: none;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
 }
 
 .tags__tag {
-    background-color: #D9D9D930;
-    margin-right: 1.5rem;
-    border-radius: 8px;
-    padding: .8rem .5rem;
-    width: 100px;
-    text-align: center;
-    border: 2px solid transparent;
+    background-color: var(--card-background);
+    color: var(--light-text-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    white-space: nowrap;
 }
 
 .tags__tag:hover {
-    border: 2px solid #7B78E5;
+    background-color: var(--primary-color);
+    color: var(--card-background);
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Galeria (cards e card) --- */
+.galeria {
+    width: 100%;
+}
+
+.cards__titulo {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    color: var(--text-color);
+}
+
+.cards__lista {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    justify-content: center;
+}
+
+.card {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card__imagem {
+    max-width: 100%;
+    height: 180px; /* Altura fixa para as imagens */
+    object-fit: cover; /* Recorta a imagem para cobrir o espaço */
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.card__tag {
+    background-color: var(--accent-color); /* Cor de destaque para a tag do card */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    margin-bottom: 10px;
+    display: inline-block; /* Permite espaçamento */
+    min-width: 60px; /* Garante tamanho mínimo se a tag estiver vazia */
+    height: 20px; /* Ajuste para o padding */
+}
+
+.card__info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card__titulo {
+    font-size: 1.4em;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    overflow: hidden; /* Garante que o texto não "vaze" */
+    white-space: nowrap;
+    text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+    max-width: 100%;
+}
+
+.card__texto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.card__descricao {
+    flex-grow: 1;
+    font-size: 0.9em;
+    color: var(--light-text-color);
+    text-align: left;
+    margin-right: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limita a 2 linhas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card__texto span img { /* Ícone de favorito */
+    width: 24px;
+    height: 24px;
     cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.card__texto span img:hover {
+    transform: scale(1.1);
+}
+
+/* --- Footer (Rodapé) --- */
+.rodape { /* Assumindo que seu footer é chamado de rodape */
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    color: var(--light-text-color);
+    font-size: 0.9em;
+}
+
+
+/* --- Responsividade --- */
+@media (max-width: 992px) {
+    .principal {
+        flex-direction: column; /* Empilha menu lateral e conteúdo */
+    }
+
+    .menu-lateral {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color); /* Borda na parte de baixo */
+        padding-bottom: 20px;
+        text-align: center;
+    }
+
+    .menu-lateral__navegacao {
+        flex-direction: row; /* Links do menu em linha */
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .menu-lateral__navegacao a {
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .pagina-inicial {
+        padding: 30px 20px;
+    }
+
+    .cabecalho img {
+        max-width: 120px;
+    }
+
+    .logo-texto {
+        font-size: 2.8em;
+    }
+
+    .busca__fundo {
+        flex-direction: column; /* Em telas menores, input e botão podem empilhar */
+        border: none; /* Remove a borda do container em telas pequenas */
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .busca__fundo form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .busca__input {
+        width: 100%;
+        border: 1px solid var(--border-color); /* Adiciona borda ao input novamente */
+        border-radius: 25px;
+        padding: 12px 18px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        margin-bottom: 0; /* Remove margem extra */
+    }
+
+    .busca__input:focus {
+        border-color: var(--search-border-focus);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .busca__fundo button {
+        width: 80%; /* Botão ocupa a largura total */
+        max-width: 200px;
+        margin-right: 0;
+    }
+
+    .tags__titulo {
+        font-size: 1.1em;
+    }
+
+    .tags__tag {
+        font-size: 0.85em;
+        padding: 8px 15px;
+    }
+
+    .cards__titulo {
+        font-size: 1.5em;
+    }
+
+    .tools-grid, .cards__lista {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagina-inicial {
+        padding: 20px 15px;
+    }
+
+    .cabecalho img {
+        max-width: 100px;
+    }
+
+    .logo-texto {
+        font-size: 2.2em;
+    }
+
+    .slogan { /* Adicionei um slogan aqui para exemplificar */
+        font-size: 0.9em;
+    }
 }
